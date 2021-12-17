@@ -35,20 +35,32 @@ webcam = cv2.VideoCapture(0)
 
 while True:
 
+    #lecture de chaque frame du flux de la webcam
     successful_frame_read, frame = webcam.read()
 
+    #conversion en nuance de gris
     grayscaled_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+    #detection des coordonnées du visage grâce aux données entrainées
     face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
 
+    #dessin du carré vert à l'emplacement du visage
     for (x, y, w, h) in face_coordinates:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
+    
+    #affichage de texte
+    cv2.putText(frame,'Press ESC to stop', (0,470), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),1,2)
+
+    #affichage de la frame
     cv2.imshow('Face Detector Sadeuh', frame)
 
+    
+    #attente d'une touche pour quitter le programme
     key = cv2.waitKey(1)
 
-    if key==81 or key==113:
+    #attente de echap ou q (quit)
+    if key==27 or key==113:
         break
 
 webcam.release()
